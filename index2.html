@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from demo.ninjateam.org/html/my-admin/light/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 03 Jan 2018 03:47:34 GMT -->
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Monitoring Bencana Tanah Longsor - Halaman Utama</title>
+
+	<!-- Main Styles -->
+	<link rel="stylesheet" href="assets/styles/style.min.css">
+
+	<!-- Material Design Icon -->
+	<link rel="stylesheet" href="assets/fonts/material-design/css/materialdesignicons.css">
+
+	<!-- mCustomScrollbar -->
+	<link rel="stylesheet" href="assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.min.css">
+
+	<!-- Data Tables -->
+	<link rel="stylesheet" href="assets/plugin/datatables/media/css/dataTables.bootstrap.min.css">
+	<link rel="stylesheet" href="assets/plugin/datatables/extensions/Responsive/css/responsive.bootstrap.min.css">
+
+	<!-- Waves Effect -->
+	<link rel="stylesheet" href="assets/plugin/waves/waves.min.css">
+
+	<!-- Sweet Alert -->
+	<link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
+	<link rel="stylesheet" href="assets/toastr/toastr.min.css">
+
+	<script>
+		let cek = localStorage.getItem('role');
+		if(cek != 'admin'){
+			window.location.href = 'index.html';
+		}
+	</script>
+
+</head>
+
+<body>
+	<div class="main-menu">
+		<header class="header">
+			<a href="index-2.html" class="logo"><i class="ico mdi mdi-cube-outline"></i></a>
+			<button type="button" class="button-close fa fa-times js__menu_close"></button>
+			<div class="user">
+				<a href="#" class="avatar"><img src="assets/images/avatar-sm-5.jpg" alt=""><span
+						class="status online"></span></a>
+				<h5 class="name"><a href="profile.html">Admin</a></h5>
+				<h5 class="position">Administrator</h5>
+
+				<!-- /.control-wrap -->
+			</div>
+			<!-- /.user -->
+		</header>
+		<!-- /.header -->
+		<div class="content">
+
+			<div class="navigation">
+				<h5 class="title">Navigasi</h5>
+				<!-- /.title -->
+				<ul class="menu js__accordion">
+					<li class="current">
+						<a class="waves-effect" href="index-2.html"><i
+								class="menu-icon mdi mdi-view-dashboard"></i><span>Dashboard</span></a>
+					</li>
+
+					<li>
+						<a class="waves-effect" href="#" onclick="logout()"><i class="menu-icon mdi mdi-logout"></i><span>Logout</span></a>
+					</li>
+
+				</ul>
+				<!-- /.menu js__accordion -->
+
+			</div>
+			<!-- /.navigation -->
+		</div>
+		<!-- /.content -->
+	</div>
+	<!-- /.main-menu -->
+
+	<div class="fixed-navbar">
+		<div class="pull-left">
+			<button type="button" class="menu-mobile-button glyphicon glyphicon-menu-hamburger js__menu_mobile"></button>
+			<h1 class="page-title">Halaman Utama</h1>
+			<!-- /.page-title -->
+		</div>
+		<!-- /.pull-left -->
+		<div class="pull-right">
+
+			<!-- /.ico-item -->
+
+			<a href="#" class="ico-item mdi mdi-logout"></a>
+		</div>
+		<!-- /.pull-right -->
+	</div>
+	<!-- /.fixed-navbar -->
+
+	<div id="wrapper">
+		<div class="main-content">
+			<div class="row small-spacing">
+				<div class="col-xs-12">
+					<div class="box-content">
+						<h4 class="box-title">Peta Device</h4>
+						<div class="form-group">
+							<div id="map" style="width: 100%; height: 500px"></div>
+						</div>
+					</div>
+					<!-- /.box-content -->
+				</div>
+				<!-- /.col-xs-12 -->
+
+
+				<div class="col-lg-12 col-xs-12">
+					<div class="box-content">
+						<h4 class="box-title">List Device <button class="btn btn-primary btn-xs waves-effect waves-light"
+								onclick="refresh_table()">Refresh</button></h4>
+						<div class="form-group" style="overflow-x: auto;">
+							<table id="table_list_device" class="table table-striped table-bordered display" style="width:100%">
+							</table>
+						</div>
+					</div>
+					<!-- /.box-content -->
+				</div>
+				<!-- /.col-lg-6 col-xs-12 -->
+
+				<div class="col-lg-12 col-xs-12">
+					<div class="box-content">
+						<h4 class="box-title">Device Baru</h4>
+						<div class="form-group" style="overflow-x: auto;">
+							<table id="table_device_baru" class="table table-striped table-bordered display" style="width:100%">
+							</table>
+						</div>
+					</div>
+					<!-- /.box-content -->
+				</div>
+				<!-- /.col-lg-6 col-xs-12 -->
+
+			</div>
+			<!-- /.row -->
+
+
+
+
+			<footer class="footer">
+				<ul class="list-inline">
+					<li>2022 © Kicap Karan.</li>
+					<li><a href="#">Privacy</a></li>
+					<li><a href="#">Terms</a></li>
+					<li><a href="#">Help</a></li>
+				</ul>
+			</footer>
+		</div>
+		<!-- /.main-content -->
+	</div>
+
+	<div class="modal fade" id="modal_calibrating" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-1">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+							aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel-1">Calibrating ...</h4>
+				</div>
+				<div class="modal-body" style="display: none;">
+					<div id="map2" style="width: 100%; height: 500px"></div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="button_simpan_marker" style="display:none"
+						class="btn btn-success btn-xs waves-effect waves-light" data-dismiss="modal">Simpan Marker</button>
+					<button type="button" id="button_tambah_marker" class="btn btn-primary btn-xs waves-effect waves-light">Tambah
+						Marker</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/#wrapper -->
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/script/html5shiv.min.js"></script>
+		<script src="assets/script/respond.min.js"></script>
+	<![endif]-->
+	<!-- 
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="assets/scripts/jquery.min.js"></script>
+	<script src="assets/scripts/modernizr.min.js"></script>
+	<script src="assets/plugin/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/plugin/mCustomScrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+	<script src="assets/plugin/nprogress/nprogress.js"></script>
+	<script src="assets/plugin/waves/waves.min.js"></script>
+
+	<script src="assets/sweetalert/sweetalert.js"></script>
+	<script src="assets/toastr/toastr.min.js"></script>
+
+	<script src="assets/plugin/datatables/media/js/jquery.dataTables.min.js"></script>
+	<script src="assets/plugin/datatables/media/js/dataTables.bootstrap.min.js"></script>
+	<script src="assets/scripts/main2.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD7B9RynI4hQM_Y4BG9GYxsTLWwYkGASRo&libraries=geometry,drawing">
+		</script>
+	<script src="assets/scripts/main.min.js"></script>
+	<script src="assets/socket.io/client-dist/socket.io.js"></script>
+	<script>
+		let i = 0;
+		function table_list_device() {
+			// console.log(server_url + `device_list`)
+			// loop every 10 seconds
+			// setInterval(function () {
+			// 	if (i != 0) {
+			// 		$('#table_list_device').DataTable().destroy();
+			// 	}
+			$('#table_list_device').DataTable({
+				// fetch from ajax
+				"ajax": {
+					// "url": `http://192.168.43.125/bacaan_hadis/proses.php?get_all_hadis_db=1`,
+					"url": server_url + `device_list`,
+					'crossDomain': true,
+					"type": "GET"
+				},
+				// set column definition initialisation properties
+				"columnDefs": [{
+					"targets": [3], // first column / numbering column
+					"orderable": false, // set not orderable
+				},],
+				"order": [
+					[0, 'asc']
+				],
+				// modify each column
+				"aoColumns": [
+					{
+						"mData": null,
+						"title": "ID",
+						"render": function (data, row, type, meta) {
+							return data._id;
+						}
+					},
+
+
+
+					{
+						"mData": null,
+						"title": "Cordinates",
+						"render": function (data, row, type, meta) {
+							return 'Latitude : ' + data.lat + ' , Longitude : ' + data.lng;
+						}
+					},
+					{
+						"mData": null,
+						"title": "Status",
+						"render": function (data, row, type, meta) {
+							return data.status;
+						}
+					},
+					{
+						"mData": null,
+						"title": "Aksi",
+						"render": function (data, row, type, meta) {
+							const button = `<button type="button" class="btn btn-primary btn-xs" onclick="calibrate('${data._id}')"><i class="fa fa-edit"></i></button>`;
+							return button;
+						}
+					},
+
+				]
+			});
+			i++;
+			// } , 10000);
+
+			// $('#table_list_device').DataTable().destroy();
+
+
+		}
+		table_list_device()
+		function refresh_table() {
+			$('#table_list_device').DataTable().destroy();
+			table_list_device();
+		}
+	</script>
+	<script async>
+		let ii = 0;
+		let map;
+		async function initMap() {
+
+
+
+			map = new google.maps.Map(document.getElementById("map"), {
+				zoom: 13,
+				center: { lat: -3.9843507, lng: 119.6498166 },
+				mapTypeId: 'satellite',
+				streetViewControl: false,
+			});
+
+
+
+		}
+		let markers = [];
+		setInterval(
+			async function () {
+				async function get_marker() {
+					// console.log(ii)
+					let datanya;
+					try {
+						//create fetch get map
+						let response = await fetch(server_url + 'device_list', {
+							method: 'GET',
+							crossDomain: true,
+							headers: {
+								'Content-Type': 'application/json',
+								// 'Authorization': 'Kicap_karan:bb10c6d9f01ec0cb16726b59e36c2f73'
+							},
+							// body: JSON.stringify(data)
+						});
+						const data = await response.json();
+						// console.log(data)
+						datanya = data;
+						// $.unblockUI();
+					} catch (err) {
+						console.log(err);
+						datanya = {};
+						// $.unblockUI();
+					}
+					return datanya
+				}
+
+				// await get_marker();
+
+				// remove all marker
+
+
+				let get_marker_data1 = await get_marker();
+				if (get_marker_data1.data.length > 0) {
+					//create marker
+					get_marker_data = get_marker_data1.data;
+					let infowindow
+					get_marker_data.forEach((item, index) => {
+						if (ii != 0) { markers[index].setMap(null); }
+						let iconnya, animation
+						if (item.status == "Normal") {
+							iconnya = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+							animation = null
+						} else if (item.status == "Warning") {
+							iconnya = 'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png';
+							animation = null
+						} else if (item.status == "Danger") {
+							iconnya = 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png';
+							animation = google.maps.Animation.BOUNCE
+						} else if (item.status == "Danger Area") {
+							iconnya = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png';
+							animation = google.maps.Animation.BOUNCE
+						}
+						console.log(item)
+						if (!item.end_at) {
+							markers[index] = new google.maps.Marker({
+								uniqueId: item._id,
+								position: { lat: parseFloat(item.lat), lng: parseFloat(item.lng) },
+								map: map,
+								// title: item.nama_area,
+								icon: iconnya,
+								animation: animation,
+							});
+							// markers.push(marker);
+							markers[index].setMap(map);
+							google.maps.event.addListener(markers[index], 'click', function () {
+								// console.log(item)
+								if (infowindow) {
+									infowindow.close();
+								}
+								// create let contentString with div class card-content, then inside div class card-content is div class form-group of item which is item.minimal_tinggi , item.maksimal_tinggi and item.created_at
+								let contentString = '<div class="card-content">' +
+									'<div class="form-group">' +
+									'<br>' +
+									'<label for="minimal_tinggi">Latitude</label>' +
+									'<input type="text" class="form-control" id="minimal_tinggi" value="' + item.lat + '" readonly>' +
+									'</div>' +
+									'<div class="form-group">' +
+									'<label for="maksimal_tinggi">Longitude</label>' +
+									'<input type="text" class="form-control" id="maksimal_tinggi" value="' + item.lng + ' " readonly>' +
+									'</div>' +
+									'<div class="form-group">' +
+									'<label for="created_at">Status</label>' +
+									'<input type="text" class="form-control" id="created_at" value="' + item.status + '" readonly>' +
+									'</div>' +
+									'<div class="form-group">' +
+									'<label for="created_at">Last Updated</label>' +
+									'<input type="text" class="form-control" id="created_at" value="' + removeTZdate(item.updated_at) + '" readonly>' +
+									'</div>'+
+									'<div class="form-group">' +
+									'<label for="created_at">Created At</label>' +
+									'<input type="text" class="form-control" id="created_at" value="' + removeTZdate(item.created_at) + '" readonly>' +
+									'</div>';
+								// if (item.created_at != item.updated_at) {
+								// 	contentString += '<div class="form-group">' +
+								// 		'<label for="updated_at">Waktu Diupdate</label>' +
+								// 		'<input type="text" class="form-control" id="updated_at" value="' + removeTZdate(item.updated_at) + '" readonly>' +
+								// 		'</div>';
+								// }
+								//added button edit and delete
+								contentString += '<div class="form-group text-center">' +
+									`<button class="btn btn-xs btn-success" onclick="buka_modal_edit('${item._id}')">Calibrate Ulang</button>&nbsp &nbsp` +
+
+									'</div>' +
+									'</div>';
+
+
+
+
+								infowindow = new google.maps.InfoWindow({
+									content: contentString,
+								});
+								infowindow.open({
+									anchor: markers[index],
+									map,
+									shouldFocus: false,
+								});
+							});
+						}
+
+
+					})
+
+				} else {
+					if (markers.length == 1) {
+						markers[0].setMap(null);
+					}
+
+				}
+
+				ii = ii + 1;
+			}, 10000);
+		google.maps.event.addDomListener(window, 'load', initMap);
+	</script>
+	<script>
+		// let i = 0;
+		function table_device_baru() {
+			// console.log(server_url + `device_list`)
+			// loop every 10 seconds
+			// setInterval(function () {
+			// 	if (i != 0) {
+			// 		$('#table_device_baru').DataTable().destroy();
+			// 	}
+			$('#table_device_baru').DataTable({
+				// fetch from ajax
+				"ajax": {
+					// "url": `http://192.168.43.125/bacaan_hadis/proses.php?get_all_hadis_db=1`,
+					"url": server_url + `device_baru`,
+					'crossDomain': true,
+					"type": "GET"
+				},
+				// set column definition initialisation properties
+				"columnDefs": [{
+					"targets": [2], // first column / numbering column
+					"orderable": false, // set not orderable
+				},],
+				"order": [
+					[0, 'asc']
+				],
+				// modify each column
+				"aoColumns": [
+					{
+						"mData": null,
+						"title": "ID",
+						"render": function (data, row, type, meta) {
+							return data._id;
+						}
+					},
+
+					{
+						"mData": null,
+						"title": "Status",
+						"render": function (data, row, type, meta) {
+							return data.status;
+						}
+					},
+					{
+						"mData": null,
+						"title": "Aksi",
+						"render": function (data, row, type, meta) {
+							const button = `<button type="button" class="btn btn-primary btn-xs" onclick="calibrate('${data._id}')" title="Calibrate"><i class="fa fa-edit"></i></button>`;
+							return button;
+						}
+					},
+
+				]
+			});
+			i++;
+			// } , 10000);
+
+			// $('#table_device_baru').DataTable().destroy();
+
+
+		}
+		table_device_baru()
+		async function calibrate(id) {
+			try {
+				let response = await fetch(server_url + 'calibration', {
+					method: 'POST',
+					crossDomain: true,
+					headers: {
+						'Content-Type': 'application/json',
+						// 'Authorization': 'Kicap_karan:bb10c6d9f01ec0cb16726b59e36c2f73'
+					},
+					body: JSON.stringify(
+						{
+							id: id,
+						}
+
+					)
+				});
+				const data = await response.json();
+				console.log(data)
+				datanya = data;
+				//open modal modal_calibrating
+				$('#modal_calibrating').modal({ backdrop: 'static', keyboard: false })
+				$('#modal_calibrating').modal('show');
+				// add onclick="tambah_marker(id)" to button id button_tambah_marker
+				$('#button_tambah_marker').on('click', function () {
+					tambah_marker(id);
+
+				})
+			} catch (error) {
+				console.log(error)
+			}
+
+
+
+		}
+
+		let map2;
+		async function initMap2() {
+
+
+
+			map2 = new google.maps.Map(document.getElementById("map2"), {
+				zoom: 13,
+				center: { lat: -3.9843507, lng: 119.6498166 },
+				mapTypeId: 'hybrid',
+				streetViewControl: false,
+			});
+
+
+
+		}
+		google.maps.event.addDomListener(window, 'load', initMap2);
+		function tambah_marker(id) {
+			// console.log(id,"sini tambah marker")
+			// remove attr style from class modal-body
+			$('.modal-body').removeAttr('style');
+			$('#button_tambah_marker').on('click', function () {
+				get_center(id);
+
+			})
+
+		}
+
+		let marker
+		function get_center(id) {
+			// set marker to null to remove marker
+
+
+			let center = map2.getCenter();
+			let lat = center.lat()
+			let lng = center.lng()
+			console.log(lat, lng)
+
+			function updateMarkerPosition(latLng) {
+				// document.getElementById('info').value = [
+				console.log(latLng.lat(), latLng.lng())
+				lat = latLng.lat()
+				lng = latLng.lng()
+				console.log(lat, lng)
+
+			}
+			// add marker to map2
+			marker = new google.maps.Marker({
+				uniqueId: id,
+				position: { lat: center.lat(), lng: center.lng() },
+				map: map2,
+				title: 'Center',
+				icon: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+				draggable: true,
+			});
+
+			// add listener to marker
+			google.maps.event.addListener(marker, 'dragend', function (event) {
+				updateMarkerPosition(event.latLng);
+			});
+
+			$('#button_simpan_marker').on('click', function () {
+				simpan_marker(id, lat, lng);
+
+			})
+			// hide button_tambah_marker
+			$('#button_tambah_marker').hide();
+			// show button_simpan_marker	
+			$('#button_simpan_marker').show();
+
+		}
+		async function simpan_marker(id, lat, lng) {
+			console.log(id, lat, lng)
+
+			try {
+				let response = await fetch(server_url + 'calibrate_map?id=' + id, {
+					method: 'POST',
+					crossDomain: true,
+					headers: {
+						'Content-Type': 'application/json',
+						// 'Authorization': 'Kicap_karan:bb10c6d9f01ec0cb16726b59e36c2f73'
+					},
+					body: JSON.stringify(
+						{
+							lat: lat,
+							lng: lng,
+						}
+
+					)
+				});
+				const data = await response.json();
+				// destroy table_device_baru and reload table_device_baru
+				$('#table_device_baru').DataTable().destroy();
+				table_device_baru();
+				// destroy table_list_device and reload table_list_device
+				$('#table_list_device').DataTable().destroy();
+				table_list_device();
+			} catch (error) {
+				console.log(error)
+			}
+
+			// open modal modal_calibrating
+			// $('#modal_calibrating').modal({ backdrop: 'static', keyboard: false })
+			// $('#modal_calibrating').modal('show');
+			// // add onclick="tambah_marker(id)" to button id button_tambah_marker
+			// $('#button_tambah_marker').on('click', function () {
+			// 	tambah_marker(id);
+
+			// })
+		}
+	</script>
+	<script>
+		// var socket = io('http://192.168.43.125:3004/', { transports: ['websocket', 'polling', 'flashsocket'] });
+		var socket = io('https://tanah-longosor-be.herokuapp.com/', { transports: ['websocket', 'polling', 'flashsocket'] });
+		// console.log(socket)
+		socket.on('connect', function () {
+			const sessionID = socket.id;
+			console.log('connected');
+			console.log(sessionID);
+		});
+		socket.on('disconnect', function () {
+			console.log('disconnected');
+		});
+		socket.on('reload_calibation', async function (data) {
+			// close modal_calibrating modal
+			await $('#modal_calibrating').modal('hide');
+			toastr.success('Calibration Success');
+			// reload table_device_baru and table_list_device
+			$('#table_device_baru').DataTable().destroy();
+			table_device_baru();
+			$('#table_list_device').DataTable().destroy();
+			table_list_device();
+			await $('#modal_calibrating').modal('hide');
+
+		});
+		socket.on('new_device', function (data) {
+			// close modal_calibrating modal
+			// $('#modal_calibrating').modal('hide');
+			// reload table_device_baru and table_list_device
+			toastr.success('New device connected with id ' + data.message);
+			$('#table_device_baru').DataTable().destroy();
+			table_device_baru();
+			// $('#table_list_device').DataTable().destroy();
+			// table_list_device();
+
+		});
+
+		function logout(){
+			localStorage.removeItem('role'),
+			window.location.replace("index.html")
+		}
+	</script>
+</body>
+
+<!-- Mirrored from demo.ninjateam.org/html/my-admin/light/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 03 Jan 2018 03:48:09 GMT -->
+
+</html>

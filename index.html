@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from demo.ninjateam.org/html/my-admin/light/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 03 Jan 2018 03:48:56 GMT -->
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Monitoring Bencana Tanah Longsor - Login</title>
+	<link rel="stylesheet" href="assets/styles/style.min.css">
+
+	<!-- Sweet Alert -->
+	<link rel="stylesheet" href="assets/sweetalert/sweetalert.css">
+	<link rel="stylesheet" href="assets/toastr/toastr.min.css">
+
+	<!-- Waves Effect -->
+	<link rel="stylesheet" href="assets/plugin/waves/waves.min.css">
+
+</head>
+
+<body>
+
+	<div id="single-wrapper">
+		<form action="#" class="frm-single" onsubmit="return login(event)">
+			<div class="inside">
+				<div class="title"><strong>Monitoring Bencana</strong><br>Tanah Longsor</div>
+				<!-- /.frm-title -->
+				<div class="frm-input"><input type="text" placeholder="Username" class="frm-inp" id="username" required><i
+						class="fa fa-user frm-ico"></i></div>
+				<!-- /.frm-input -->
+				<div class="frm-input"><input type="password" placeholder="Password" class="frm-inp" id="password" required><i
+						class="fa fa-lock frm-ico"></i></div>
+
+				<!-- /.clearfix -->
+				<button type="submit" class="frm-submit">Login<i class="fa fa-arrow-circle-right"></i></button>
+
+				<div class="frm-footer">Kicap Karan © 2022.</div>
+				<!-- /.footer -->
+			</div>
+			<!-- .inside -->
+		</form>
+		<!-- /.frm-single -->
+	</div>
+	<!--/#single-wrapper -->
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+		<script src="assets/script/html5shiv.min.js"></script>
+		<script src="assets/script/respond.min.js"></script>
+	<![endif]-->
+	<!-- 
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="assets/scripts/jquery.min.js"></script>
+	<script src="assets/scripts/modernizr.min.js"></script>
+	<script src="assets/plugin/bootstrap/js/bootstrap.min.js"></script>
+	<script src="assets/plugin/nprogress/nprogress.js"></script>
+	<script src="assets/plugin/waves/waves.min.js"></script>
+	<script src="assets/sweetalert/sweetalert.js"></script>
+	<script src="assets/toastr/toastr.min.js"></script>
+	<script src="assets/block/jquery.blockUI.js"></script>
+	<script src="assets/scripts/main2.js"></script>
+
+	<script src="assets/scripts/main.min.js"></script>
+	<script>
+		async function login(e) {
+			e.preventDefault();
+			const username = document.getElementById('username').value;
+			const password = document.getElementById('password').value;
+
+			if (username != "admin" && password != "admin") {
+				toastr.error('Username atau Password Salah');
+				// focus kembali username
+				document.getElementById('username').focus();
+			} else {
+				localStorage.setItem('role', "admin");
+				toastr.success('Login Berhasil');
+				// wait for 1.5 seconds
+				await new Promise(resolve => setTimeout(resolve, 1500));
+				// redirect to dashboard
+				window.location.href = "index2.html";
+				
+			}
+
+
+		}
+	</script>
+</body>
+
+<!-- Mirrored from demo.ninjateam.org/html/my-admin/light/page-login.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 03 Jan 2018 03:48:56 GMT -->
+
+</html>
